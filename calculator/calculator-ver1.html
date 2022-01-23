@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>계산기 만들기</title>
+
+  <style>
+    .calculator-wrap {
+      width: 400px;
+    }
+    .row {
+      display: flex;
+    }
+    .row button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #000;
+      flex-basis: 25%;
+      height: 50px;
+      color: #fff;
+      background-color: rgb(109, 109, 109);
+      box-sizing: border-box;
+      font-size: 18px;
+    }
+    .row button:hover {
+      opacity: 0.7;
+    }
+
+    .row button.clear {
+      flex-basis: 75%;
+      background-color: rgb(59, 59, 59);
+    }
+    .row button.calculate {
+      flex-basis: 50%;
+    }
+
+    .row button.style-orange {
+      background-color: rgb(230, 127, 2);
+    }
+
+    .print-area {
+      width: 100%;
+      height: 50px;
+      background-color: rgb(43, 43, 43);
+      text-align: right;
+      border: none;
+      color: #fff;
+      font-size: 30px;
+      padding-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <div class="row">
+      <div class="print-area">0</div>
+    </div>
+    <div class="calculator-button">
+      <div class="row">
+        <button class="clear">AC</button>
+        <button class="operator division style-orange">÷</button>
+      </div>
+      <div class="row">
+        <button class="num">7</button>
+        <button class="num">8</button>
+        <button class="num">9</button>
+        <button class="operator multiplication style-orange">x</button>
+      </div>
+      <div class="row">
+        <button class="num">4</button>
+        <button class="num">5</button>
+        <button class="num">6</button>
+        <button class="operator subtraction style-orange">-</button>
+      </div>
+      <div class="row">
+        <button class="num">1</button>
+        <button class="num">2</button>
+        <button class="num">3</button>
+        <button class="operator addtion style-orange">+</button>
+      </div>
+      <div class="row">
+        <button class="num">0</button>
+        <button class="num">.</button>
+        <button class="calculate style-orange">=</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const calculator = document.querySelector('.calculator');
+    const buttons = calculator.querySelector('.calculator-button');
+    const operator = document.querySelector('.operator');
+    const display = document.querySelector('.print-area');
+    
+    function calculate(n1, operator, n2) {
+      let result = 0;
+      if(operator === '÷') {
+        result = Number(n1) / Number(n2);
+      }
+      else if(operator === 'x') {
+        result = Number(n1) * Number(n2);
+      }
+      else if(operator === '-') {
+        result = Number(n1) - Number(n2);
+      }
+      else if(operator === '+') {
+        result = Number(n1) + Number(n2);
+      }
+      return String(result);
+    }
+
+    let firstNum = '';
+    let operatorForAdvanced = '';
+    let previousKey = '';
+    let previousNum = '';
+
+    buttons.addEventListener('click', function(event) {
+      const target = event.target; // 클릭된 HTML 엘리먼트의 정보가 저장되어 있음
+      const action = target.classList[0]; // 클릭된 HTML 엘리먼트의 클래스정보를 가져옴
+      const buttonContent = target.textContent; // 클릭된 HTML 엘리먼트의 텍스트 정보를 가져옴
+
+      if(target.matches('button')) {
+
+        if(action === 'num') { //클릭된 HTML 엘리먼트의 클래스 네임이 'num'이라면
+        //기존 계산기 숫자가 0이고, 오퍼레이터 버튼이 안눌린 상태의 분기
+          if (display.textContent === '0' && operatorForAdvanced === '') { 
+            display.textContent = buttonContent;
+            firstNum = display.textContent // 첫번째 숫자를 변수애 할당
+          }
+
+          // 기존 계산기 숫자가 0이 아니고, 오퍼레이터 버튼이 안눌린 상태의 분기
+          // ex) 15를 누르기 위해 1을 누른 상태의 분기(두자리 연속 누르기 위한 코드)
+          else if (display.textContent !== '0' && operatorForAdvanced === '' ) {
+            // textcontent는 문자열이기 때문에 기존 계산기에서 보여지는 숫자에 +연산자로 구현
+            display.textContent = display.textContent + buttonContent;
+            firstNum = display.textContent;
+          }
+
+          // 기존 계산기 숫자가 0이 아니고, 오퍼레이터 버튼이 눌린 상태의 분기
+          // ex) 15+7을 하기 위해 15와 +를 누른 상태(두번째 숫자를 누르기 위한 코드)
+          else if (display.textContent !== '0' && operatorForAdvanced !== '') {
+            if(previousKey === operatorForAdvanced) {
+              display.textContent = buttonContent;
+              // 직전키를 변수에 할당 (직전키가 오퍼레이터냐 숫자냐에 따라 계산기의 다양한 기능을 구현하기 위함)
+              previousKey = display.textContent;
+              // 직전 숫자를 변수에 할당
+              previousNum = display.textContent;
+            }
+            // ex) 15+17을 하기 위해 15와 +, 1을 누른 상태(17을 완성하기 위한 코드)
+            else if(previousKey !== operatorForAdvanced) {
+              display.textContent = display.textContent + buttonContent;
+              previousNum = display.textContent
+            }
+          }
+        }
+
+        if(action === 'operator') { //클릭된 HTML 엘리먼트의 클래스 네임이 'operator'이라면
+          operatorForAdvanced = buttonContent; // 오퍼레이터 누를 때 누른 텍스트 정보 할당
+          previousKey = operatorForAdvanced; // 직전키에 오퍼레이터 텍스트 정보 할당
+        }
+
+        if(action === 'clear') // AC(초기화) 버튼을 누를 때 분기
+        display.textContent = '0';
+        firstNum = '';
+        previousNum = '';
+        operatorForAdvanced = '';
+        previousKey = '';
+      }
+
+      if(action === 'calculate') { // =(계산) 버튼을 누를 때
+        if(firstNum != '' && operatorForAdvanced === '') {
+          display.textContent = firstNum;
+        }
+        else if(firstNum != '' && previousNum === '') {
+          // 기존에 작성했던 calculate 함수를 이용해 계산 상황에 따른 전달인자와 함께 호출
+          display.textContent = calculator(display.textContent, operatorForAdvanced, display.textContent);
+        }
+        else if(previousKey === display.textContent) {
+          display.textContent = calculator(firstNum, operatorForAdvanced, previousNum);
+        }
+        else if(previousKey != display.textContent && previousNum !== '') {
+          display.textContent = calculator(display.textContent, operatorForAdvanced, previousNum);
+        }
+        else if(previousKey !== display.textContent && previousNum === '') {
+          display.textContent = firstNum;
+        }
+      }
+    });
+  </script>
+</body>
+</html>
