@@ -1,180 +1,215 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>계산기 만들기</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>계산기 만들기</title>
 
-  <style>
-    .calculator-wrap {
-      width: 400px;
-    }
-    .row {
-      display: flex;
-    }
-    .row button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid #000;
-      flex-basis: 25%;
-      height: 50px;
-      color: #fff;
-      background-color: rgb(109, 109, 109);
-      box-sizing: border-box;
-      font-size: 18px;
-    }
-    .row button:hover {
-      opacity: 0.7;
-    }
+    <style>
+        .calculator-wrap {
+            width: 400px;
+        }
 
-    .row button.clear {
-      flex-basis: 75%;
-      background-color: rgb(59, 59, 59);
-    }
-    .row button.calculate {
-      flex-basis: 50%;
-    }
+        .row {
+            display: flex;
+        }
 
-    .row button.style-orange {
-      background-color: rgb(230, 127, 2);
-    }
+        .row button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #000;
+            flex-basis: 25%;
+            height: 50px;
+            color: #fff;
+            background-color: rgb(109, 109, 109);
+            box-sizing: border-box;
+            font-size: 18px;
+        }
 
-    .print-area {
-      width: 100%;
-      height: 50px;
-      background-color: rgb(43, 43, 43);
-      text-align: right;
-      border: none;
-      color: #fff;
-      font-size: 30px;
-      padding-right: 10px;
-    }
-  </style>
+        .row button:hover {
+            opacity: 0.7;
+        }
+
+        .row button.clear {
+            flex-basis: 75%;
+            background-color: rgb(59, 59, 59);
+        }
+
+        .row button.calculate {
+            flex-basis: 50%;
+        }
+
+        .row button.style-orange {
+            background-color: rgb(230, 127, 2);
+        }
+
+        .print-area {
+            width: 100%;
+            height: 50px;
+            background-color: rgb(43, 43, 43);
+            text-align: right;
+            border: none;
+            color: #fff;
+            font-size: 30px;
+            padding-right: 10px;
+        }
+    </style>
 </head>
+
 <body>
-  <div class="calculator">
-    <div class="row">
-      <div class="print-area">0</div>
+    <div class="calculator">
+        <div class="row">
+            <div class="print-area">0</div>
+        </div>
+        <div class="calculator-button">
+            <div class="row">
+                <button class="clear">AC</button>
+                <button class="operator division style-orange">÷</button>
+            </div>
+            <div class="row">
+                <button class="num">7</button>
+                <button class="num">8</button>
+                <button class="num">9</button>
+                <button class="operator multiplication style-orange">x</button>
+            </div>
+            <div class="row">
+                <button class="num">4</button>
+                <button class="num">5</button>
+                <button class="num">6</button>
+                <button class="operator subtraction style-orange">-</button>
+            </div>
+            <div class="row">
+                <button class="num">1</button>
+                <button class="num">2</button>
+                <button class="num">3</button>
+                <button class="operator addtion style-orange">+</button>
+            </div>
+            <div class="row">
+                <button class="num">0</button>
+                <button class="num">.</button>
+                <button class="calculate style-orange">=</button>
+            </div>
+        </div>
     </div>
-    <div class="calculator-button">
-      <div class="row">
-        <button class="clear">AC</button>
-        <button class="operator division style-orange">÷</button>
-      </div>
-      <div class="row">
-        <button class="num">7</button>
-        <button class="num">8</button>
-        <button class="num">9</button>
-        <button class="operator multiplication style-orange">x</button>
-      </div>
-      <div class="row">
-        <button class="num">4</button>
-        <button class="num">5</button>
-        <button class="num">6</button>
-        <button class="operator subtraction style-orange">-</button>
-      </div>
-      <div class="row">
-        <button class="num">1</button>
-        <button class="num">2</button>
-        <button class="num">3</button>
-        <button class="operator addtion style-orange">+</button>
-      </div>
-      <div class="row">
-        <button class="num">0</button>
-        <button class="num">.</button>
-        <button class="calculate style-orange">=</button>
-      </div>
-    </div>
-  </div>
 
-  <script>
-    const calculator = document.querySelector('.calculator');
-    const buttons = calculator.querySelector('.calculator-button');
-    const operator = document.querySelector('.operator');
-    const display = document.querySelector('.print-area');
-    
-    function calculate(n1, operator, n2) {
-    //   console.log(n1);
-    //   console.log(n2);
-    //   console.log(operator);
+    <script>
+        const calculator = document.querySelector('.calculator');
+        const buttons = document.querySelector('.calculator-button');
+        const operator = document.querySelectorAll('.operator');
+        const display = document.querySelector('.print-area');
 
-      let result = 0;
-      if(operator === '÷') {
-        result = Number(n1) / Number(n2);
-      }
-      else if(operator === 'x') {
-        result = Number(n1) * Number(n2);
-      }
-      else if(operator === '-') {
-        result = Number(n1) - Number(n2);
-      }
-      else if(operator === '+') {
-        result = Number(n1) + Number(n2);
-      }
-      return String(result);
-    }
+        // console.log(operator);
 
-    let _num = '';
-    let _operator = '';
-    let _displayClear = false;
+        function calculate(n1, operator, n2) {
+            // console.log(n1);
+            // console.log(n2);
+            // console.log(operator);
 
-    buttons.addEventListener('click', function(event) {
-      const target = event.target; // 클릭된 HTML 엘리먼트의 정보가 저장되어 있음
-      const action = target.classList[0]; // 클릭된 HTML 엘리먼트의 클래스정보를 가져옴
-      const buttonContent = target.textContent; // 클릭된 HTML 엘리먼트의 텍스트 정보를 가져옴
-
-      if(target.matches('button')) {
-
-        if(action === 'num') {
-            if(_displayClear) {
-              _displayClear = false;
-              display.textContent = buttonContent;
-              return;
+            let result = 0;
+            if (operator === '÷') {
+                result = Number(n1) / Number(n2);
             }
-            
-            if(display.textContent === '0' )
-              display.textContent = buttonContent;
-            else
-              display.textContent = display.textContent + buttonContent;
-
+            else if (operator === 'x') {
+                result = Number(n1) * Number(n2);
+            }
+            else if (operator === '-') {
+                result = Number(n1) - Number(n2);
+            }
+            else if (operator === '+') {
+                result = Number(n1) + Number(n2);
+            }
+            return String(result);
         }
 
-        else if(action === 'operator') { 
-          if(_displayClear)
-            return;
+        let _num = '';
+        let _operator = '';
+        let _displayClear = false;
 
-          if(_num !== '')
-            display.textContent = calculate(_num, _operator, display.textContent);
 
-          _num = display.textContent;
-          _operator = buttonContent;
-          _displayClear = true;
+        // const num = document.querySelector('.num');
 
-        }
+        // num.addEventListener('click', function() {
+        //     if (action === 'num') {
+        //             if (_displayClear) {
+        //                 _displayClear = false;
+        //                 display.textContent = buttonContent;
+        //                 return;
+        //             }
 
-        else if(action === 'clear') {
-          display.textContent = '0';
-          _num = '';
-          _operator = '';
-          _displayClear = false;
-        }
+        //             if (display.textContent === '0') {
+        //                 display.textContent = buttonContent;
+        //             }
+        //             else {
+        //                 display.textContent = display.textContent + buttonContent;
+        //             }
 
-        else if(action === 'calculate') {
-          if(_num === '')
-            return;
-            
-          let display_num = display.textContent;
-          display.textContent = calculate(_num, _operator, display_num);
+        //         }
+        // });
 
-          if(!_displayClear){
-            _num = display_num;
-            _displayClear = true;
-          }
-        }
-      }
-    });
-  </script>
+        buttons.addEventListener('click', function (event) {
+            const target = event.target; // 클릭된 HTML 엘리먼트의 정보가 저장되어 있음
+            const action = target.classList[0]; // 클릭된 HTML 엘리먼트의 클래스정보를 가져옴
+            const buttonContent = target.textContent; // 클릭된 HTML 엘리먼트의 텍스트 정보를 가져옴
+
+            if (target.matches('button')) {
+
+                if (action === 'num') {
+                    if (_displayClear) {
+                        _displayClear = false;
+                        display.textContent = buttonContent;
+                        return;
+                    }
+
+                    if (display.textContent === '0') {
+                        display.textContent = buttonContent;
+                    }
+                    else {
+                        display.textContent = display.textContent + buttonContent;
+                    }
+
+                }
+                
+                else if (action === 'operator') {
+                    if (_displayClear) {
+                        return;
+                    }
+
+                    if (_num !== '') {
+                        display.textContent = calculate(_num, _operator, display.textContent);
+                    }
+
+                    _num = display.textContent;
+                    _operator = buttonContent;
+                    _displayClear = true;
+
+                }
+
+                else if (action === 'clear') {
+                    display.textContent = '0';
+                    _num = '';
+                    _operator = '';
+                    _displayClear = false;
+                }
+
+                else if (action === 'calculate') {
+                    if (_num === '') {
+                        return;
+                    }
+
+                    let display_num = display.textContent;
+                    display.textContent = calculate(_num, _operator, display_num);
+
+                    if (!_displayClear) {
+                        _num = display_num;
+                        _displayClear = true;
+                    }
+                }
+            }
+        });
+    </script>
 </body>
+
 </html>
