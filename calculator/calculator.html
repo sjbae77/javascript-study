@@ -106,31 +106,85 @@
 
     // console.log(operator);
 
-    function calculate(n1, operator, n2) {
+    function calculate(n1) {
         // console.log(n1);
         // console.log(n2);
         // console.log(operator);
 
         let result = 0;
-        if (operator === '/') {
-            result = Number(n1) / Number(n2);
+        if (_operator === '/') {
+            result = Number(_num) / Number(n1);
         }
-        else if (operator === 'x') {
-            result = Number(n1) * Number(n2);
+        else if (_operator === 'x') {
+            result = Number(_num) * Number(n1);
         }
-        else if (operator === '-') {
-            result = Number(n1) - Number(n2);
+        else if (_operator === '-') {
+            result = Number(_num) - Number(n1);
         }
-        else if (operator === '+') {
-            result = Number(n1) + Number(n2);
+        else if (_operator === '+') {
+            result = Number(_num) + Number(n1);
         }
         return String(result);
     }
 
+    function fn_num(content) {
+        if (_displayClear) {
+            _displayClear = false;
+            display.textContent = content;
+            return;
+        }
+
+        if (display.textContent === '0') {
+            display.textContent = content;
+        }
+        else {
+            display.textContent = display.textContent + content;
+        }
+    }
+
+    function set_calc(content) {
+        _num = display.textContent;
+        _operator = content;
+    }
+
+    function fn_operator(content) {
+        if (_displayClear) {
+            set_calc(content);
+            return;
+        }
+
+        if (_num !== '') {
+            display.textContent = calculate(display.textContent);
+        }
+
+        _displayClear = true;
+        set_calc(content);
+    }
+
+    function fn_clear() {
+        _num = '';
+        _operator = '';
+        _displayClear = false;
+        display.textContent = '0';
+    }
+
+    function fn_calculate() {
+        if (_num === '') {
+            return;
+        }
+
+        let display_num = display.textContent;
+        display.textContent = calculate(display_num);
+
+        if (!_displayClear) {
+            _num = display_num;
+            _displayClear = true;
+        }
+    }    
+
     let _num = '';
     let _operator = '';
     let _displayClear = false;
-
 
     buttons.addEventListener('click', function (event) {
         const target = event.target; // 클릭된 HTML 엘리먼트의 정보가 저장되어 있음
@@ -140,58 +194,43 @@
         if (target.matches('button')) {
 
             if (action === 'num') {
-                if (_displayClear) {
-                    _displayClear = false;
-                    display.textContent = buttonContent;
-                    return;
-                }
-
-                if (display.textContent === '0') {
-                    display.textContent = buttonContent;
-                }
-                else {
-                    display.textContent = display.textContent + buttonContent;
-                }
-
+                fn_num(buttonContent);
             }
-
+                
             else if (action === 'operator') {
-                if (_displayClear) {
-                    return;
-                }
-
-                if (_num !== '') {
-                    display.textContent = calculate(_num, _operator, display.textContent);
-                }
-
-                _num = display.textContent;
-                _operator = buttonContent;
-                _displayClear = true;
-
+                fn_operator(buttonContent);
             }
 
             else if (action === 'clear') {
-                display.textContent = '0';
-                _num = '';
-                _operator = '';
-                _displayClear = false;
+                fn_clear();
             }
 
             else if (action === 'calculate') {
-                if (_num === '') {
-                    return;
-                }
-
-                let display_num = display.textContent;
-                display.textContent = calculate(_num, _operator, display_num);
-
-                if (!_displayClear) {
-                    _num = display_num;
-                    _displayClear = true;
-                }
+                fn_calculate();
             }
         }
     });
+
+    // const num = document.querySelectorAll('.num');
+
+    // for(let i = 0; i < num.length; i++) {
+
+    //     num[i].addEventListener("click", function() {
+    //         console.log(this.innerHTML);
+    //         fn_num(this.innerHTML);
+    //     });
+    // }
+
+// const num = document.querySelectorAll('.row');
+
+// for(let i = 0; i < num.length; i++) {
+//         console.log(num[i]);
+//     num[i].addEventListener("click", function() {
+//         console.log(this.innerHTML);
+//         fn_num(this.innerHTML);
+//     });
+// }
+
 </script>
 </body>
 
