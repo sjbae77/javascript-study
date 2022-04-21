@@ -8,7 +8,7 @@
     <title>계산기 만들기</title>
 
     <style>
-        .calculator {
+        .calculator-wrap {
             width: 400px;
         }
 
@@ -58,12 +58,13 @@
             color: #fff;
             font-size: 30px;
             padding-right: 10px;
+            overflow: hidden;
         }
     </style>
 </head>
 
 <body>
-<div class="calculator">
+<div class="calculator-wrap">
     <div class="row">
         <div class="print-area">0</div>
     </div>
@@ -99,35 +100,60 @@
 </div>
 
 <script>
-    // const calculator = document.querySelector('.calculator');
     const buttons = document.querySelector('.calculator-button');
     const operator = document.querySelectorAll('.operator');
     const display = document.querySelector('.print-area');
+    
+    let _oldNumber = '';
+    let _operatorType = '';
+    let _displayClear = false;
 
-    // console.log(operator);
+    function handleClick(event) {
+        const target = event.target; // 클릭된 HTML 엘리먼트의 정보가 저장되어 있음
+        const action = target.classList[0]; // 클릭된 HTML 엘리먼트의 클래스정보를 가져옴
+        const buttonContent = target.textContent; // 클릭된 HTML 엘리먼트의 텍스트 정보를 가져옴
 
-    function calculate(n1) {
-        // console.log(n1);
-        // console.log(n2);
-        // console.log(operator);
+        if (target.matches('button')) {
+
+            if (action === 'num') {
+                settingNumber(buttonContent);
+            }
+                
+            else if (action === 'operator') {
+                settingOperator(buttonContent);
+            }
+
+            else if (action === 'clear') {
+                clear();
+            }
+
+            else if (action === 'calculate') {
+                viewResult();
+            }
+        }
+    }
+
+    buttons.addEventListener('click', handleClick);
+
+    function calculate(newNumber) {
 
         let result = 0;
-        if (_operator === '/') {
-            result = Number(_num) / Number(n1);
+        if (_operatorType === '/') {
+            result = Number(_oldNumber) / Number(newNumber);
         }
-        else if (_operator === 'x') {
-            result = Number(_num) * Number(n1);
+        else if (_operatorType === 'x') {
+            result = Number(_oldNumber) * Number(newNumber);
         }
-        else if (_operator === '-') {
-            result = Number(_num) - Number(n1);
+        else if (_operatorType === '-') {
+            result = Number(_oldNumber) - Number(newNumber);
         }
-        else if (_operator === '+') {
-            result = Number(_num) + Number(n1);
+        else if (_operatorType === '+') {
+            result = Number(_oldNumber) + Number(newNumber);
         }
         return String(result);
     }
 
-    function fn_num(content) {
+    function settingNumber(content) {
         if (_displayClear) {
             _displayClear = false;
             display.textContent = content;
@@ -138,22 +164,24 @@
             display.textContent = content;
         }
         else {
-            display.textContent = display.textContent + content;
+            display.textContent += content;
         }
     }
 
     function set_calc(content) {
-        _num = display.textContent;
-        _operator = content;
+        _oldNumber = display.textContent;
+        _operatorType = content;
     }
 
-    function fn_operator(content) {
+    function settingOperator(content) {
+        console.log(_displayClear);
         if (_displayClear) {
             set_calc(content);
+            console.log("zzz");
             return;
         }
 
-        if (_num !== '') {
+        if (_oldNumber !== '') {
             display.textContent = calculate(display.textContent);
         }
 
@@ -161,75 +189,27 @@
         set_calc(content);
     }
 
-    function fn_clear() {
-        _num = '';
-        _operator = '';
+    function clear() {
+        _oldNumber = '';
+        _operatorType = '';
         _displayClear = false;
         display.textContent = '0';
     }
 
-    function fn_calculate() {
-        if (_num === '') {
+    function viewResult() {
+        if (_oldNumber === '') {
             return;
         }
 
-        let display_num = display.textContent;
-        display.textContent = calculate(display_num);
+        let displayNumber = display.textContent;
+        display.textContent = calculate(displayNumber);
 
         if (!_displayClear) {
-            _num = display_num;
+            _oldNumber = displayNumber;
             _displayClear = true;
         }
-    }    
+    }
 
-    let _num = '';
-    let _operator = '';
-    let _displayClear = false;
-
-    buttons.addEventListener('click', function (event) {
-        const target = event.target; // 클릭된 HTML 엘리먼트의 정보가 저장되어 있음
-        const action = target.classList[0]; // 클릭된 HTML 엘리먼트의 클래스정보를 가져옴
-        const buttonContent = target.textContent; // 클릭된 HTML 엘리먼트의 텍스트 정보를 가져옴
-
-        if (target.matches('button')) {
-
-            if (action === 'num') {
-                fn_num(buttonContent);
-            }
-                
-            else if (action === 'operator') {
-                fn_operator(buttonContent);
-            }
-
-            else if (action === 'clear') {
-                fn_clear();
-            }
-
-            else if (action === 'calculate') {
-                fn_calculate();
-            }
-        }
-    });
-
-    // const num = document.querySelectorAll('.num');
-
-    // for(let i = 0; i < num.length; i++) {
-
-    //     num[i].addEventListener("click", function() {
-    //         console.log(this.innerHTML);
-    //         fn_num(this.innerHTML);
-    //     });
-    // }
-
-// const num = document.querySelectorAll('.row');
-
-// for(let i = 0; i < num.length; i++) {
-//         console.log(num[i]);
-//     num[i].addEventListener("click", function() {
-//         console.log(this.innerHTML);
-//         fn_num(this.innerHTML);
-//     });
-// }
 
 </script>
 </body>
