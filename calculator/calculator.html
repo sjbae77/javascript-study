@@ -104,9 +104,9 @@
     const operator = document.querySelectorAll('.operator');
     const display = document.querySelector('.print-area');
     
-    let _oldNumber = '';
+    let _oldNumber = 0;
     let _operatorType = '';
-    let _displayClear = false;
+    let _displayClear = false; // 숫자버튼 -> 연산자 버튼 -> 다시 숫자버튼 클릭시, print-area 영역에 클릭한 숫자값 다시 대입해줘야함. 그러기 위한 분기처리
 
     function handleClick(event) {
         const target = event.target; // 클릭된 HTML 엘리먼트의 정보가 저장되어 있음
@@ -150,7 +150,7 @@
         else if (_operatorType === '+') {
             result = Number(_oldNumber) + Number(newNumber);
         }
-        return String(result);
+        return result;
     }
 
     function settingNumber(content) {
@@ -168,41 +168,43 @@
         }
     }
 
-    function set_calc(content) {
+    function settingCalculator(content) {
         _oldNumber = display.textContent;
         _operatorType = content;
     }
 
     function settingOperator(content) {
-        console.log(_displayClear);
         if (_displayClear) {
-            set_calc(content);
-            console.log("zzz");
+            settingCalculator(content);
             return;
         }
 
-        if (_oldNumber !== '') {
+        if (_oldNumber !== 0) {
             display.textContent = calculate(display.textContent);
         }
 
         _displayClear = true;
-        set_calc(content);
+        settingCalculator(content);
     }
 
     function clear() {
-        _oldNumber = '';
+        _oldNumber = 0;
         _operatorType = '';
         _displayClear = false;
         display.textContent = '0';
     }
 
     function viewResult() {
-        if (_oldNumber === '') {
+        if (_oldNumber === 0) {
+            // console.log("test11");
             return;
         }
 
         let displayNumber = display.textContent;
         display.textContent = calculate(displayNumber);
+
+        // console.log("test22");
+        // console.log(`oldNumber은? ${_oldNumber}`);
 
         if (!_displayClear) {
             _oldNumber = displayNumber;
